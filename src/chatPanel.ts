@@ -69,6 +69,7 @@ export class ChatPanel {
           switch (msg.type) {
             case 'chat:send':
               if (msg.text) {
+                this.post({ type: 'chat:append', role: 'user', content: msg.text });
                 await this.onUserMessage(msg.text);
               }
               break;
