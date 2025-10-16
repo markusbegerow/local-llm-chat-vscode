@@ -2,15 +2,23 @@
   "name": "local-llm-chat-vscode",
   "displayName": "Local LLM for VS Code",
   "description": "Secure chat with local LLMs and create files in your workspace with AI assistance.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "publisher": "MarkusBegerow",
+  "icon": "resources/robot_icon.png",
+  "author": {
+	"name": "Markus Begerow"
+  },
+  "contributors": [
+	"Markus Begerow"
+  ],
   "engines": {
     "vscode": "^1.85.0"
   },
   "categories": [
+	"Extension Packs",
     "Other",
-    "Machine Learning",
-    "Snippets"
+    "AI",
+    "Chat"
   ],
   "repository": {
     "type": "git",
@@ -18,7 +26,10 @@
   },
   "homepage": "https://github.com/markusbegerow/local-llm-chat-vscode#readme",
   "bugs": { "url": "https://github.com/markusbegerow/local-llm-chat-vscode/issues" },
-  "license": "SEE LICENSE IN LICENSE",
+  "sponsor": {
+	"url": "https://github.com/sponsors/markusbegerow"
+  },
+  "license": "MIT",
   "keywords": [
     "llm",
     "ollama",
