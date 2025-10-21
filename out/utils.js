@@ -116,10 +116,9 @@ function validateRelativePath(relPath) {
 function getLLMConfig() {
     const config = vscode.workspace.getConfiguration('localLLM');
     return {
-        apiUrl: config.get('apiUrl') ?? 'http://localhost:11434',
-        model: config.get('model') ?? 'llama3.1',
-        apiCompat: config.get('apiCompat') ?? 'openai',
-        customEndpoint: config.get('customEndpoint') ?? '',
+        apiUrl: config.get('apiUrl') ?? 'http://localhost:11434/v1/chat/completions',
+        token: config.get('token') ?? 'ollama',
+        model: config.get('model') ?? 'llama3.2',
         temperature: config.get('temperature') ?? 0.7,
         maxTokens: config.get('maxTokens') ?? 2048,
         systemPrompt: config.get('systemPrompt') ??

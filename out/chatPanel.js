@@ -148,17 +148,14 @@ class ChatPanel {
         this.messages.push({ role: 'user', content: trimmedText });
         try {
             const config = (0, utils_1.getLLMConfig)();
-            const token = await (0, llm_1.getSecretToken)(this.context);
             // Trim message history if needed
             this.messages = (0, utils_1.trimMessageHistory)(this.messages, config.maxHistoryMessages);
             // Call LLM
             const reply = await (0, llm_1.callLLM)({
                 apiUrl: config.apiUrl,
-                apiCompat: config.apiCompat,
                 model: config.model,
-                token,
+                token: config.token,
                 messages: this.messages,
-                customEndpoint: config.customEndpoint,
                 temperature: config.temperature,
                 maxTokens: config.maxTokens,
                 timeout: config.requestTimeout

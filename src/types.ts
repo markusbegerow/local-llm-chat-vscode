@@ -82,9 +82,8 @@ export interface FileSuggestion {
  */
 export interface LLMConfig {
   apiUrl: string;
+  token: string;
   model: string;
-  apiCompat: 'openai' | 'ollama';
-  customEndpoint: string;
   temperature: number;
   maxTokens: number;
   systemPrompt: string;
@@ -99,11 +98,9 @@ export interface LLMConfig {
  */
 export interface LLMCallOptions {
   apiUrl: string;
-  apiCompat: 'openai' | 'ollama';
   model: string;
-  token: string | undefined;
+  token: string;
   messages: ChatMessage[];
-  customEndpoint?: string;
   temperature?: number;
   maxTokens?: number;
   timeout?: number;

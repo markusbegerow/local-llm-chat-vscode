@@ -3,7 +3,7 @@
  */
 
 import * as vscode from 'vscode';
-import { callLLM, getSecretToken } from './llm';
+import { callLLM } from './llm';
 import { ChatMessage, FileSuggestion, WebviewMessage } from './types';
 import {
   getActiveWorkspaceFolder,
@@ -160,7 +160,6 @@ export class ChatPanel {
 
     try {
       const config = getLLMConfig();
-      const token = await getSecretToken(this.context);
 
       // Trim message history if needed
       this.messages = trimMessageHistory(this.messages, config.maxHistoryMessages);
@@ -168,11 +167,9 @@ export class ChatPanel {
       // Call LLM
       const reply = await callLLM({
         apiUrl: config.apiUrl,
-        apiCompat: config.apiCompat,
         model: config.model,
-        token,
+        token: config.token,
         messages: this.messages,
-        customEndpoint: config.customEndpoint,
         temperature: config.temperature,
         maxTokens: config.maxTokens,
         timeout: config.requestTimeout

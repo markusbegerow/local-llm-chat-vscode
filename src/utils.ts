@@ -84,10 +84,9 @@ export function getLLMConfig(): LLMConfig {
   const config = vscode.workspace.getConfiguration('localLLM');
 
   return {
-    apiUrl: config.get<string>('apiUrl') ?? 'http://localhost:11434',
-    model: config.get<string>('model') ?? 'llama3.1',
-    apiCompat: config.get<'openai' | 'ollama'>('apiCompat') ?? 'openai',
-    customEndpoint: config.get<string>('customEndpoint') ?? '',
+    apiUrl: config.get<string>('apiUrl') ?? 'http://localhost:11434/v1/chat/completions',
+    token: config.get<string>('token') ?? 'ollama',
+    model: config.get<string>('model') ?? 'llama3.2',
     temperature: config.get<number>('temperature') ?? 0.7,
     maxTokens: config.get<number>('maxTokens') ?? 2048,
     systemPrompt: config.get<string>('systemPrompt') ??

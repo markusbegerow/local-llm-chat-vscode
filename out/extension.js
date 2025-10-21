@@ -40,7 +40,6 @@ exports.activate = activate;
 exports.deactivate = deactivate;
 const vscode = __importStar(require("vscode"));
 const chatPanel_1 = require("./chatPanel");
-const llm_1 = require("./llm");
 const utils_1 = require("./utils");
 /**
  * Extension activation
@@ -50,10 +49,6 @@ function activate(context) {
     // Register: Open Chat command
     context.subscriptions.push(vscode.commands.registerCommand('localLLM.openChat', () => {
         chatPanel_1.ChatPanel.open(context);
-    }));
-    // Register: Configure API Settings command
-    context.subscriptions.push(vscode.commands.registerCommand('localLLM.setCredentials', async () => {
-        await configureSettings(context);
     }));
     // Register: Create File From Selection command
     context.subscriptions.push(vscode.commands.registerCommand('localLLM.newFileFromSelection', async () => {
@@ -94,112 +89,6 @@ function activate(context) {
  */
 function deactivate() {
     console.log('Local LLM Chat extension deactivated');
-}
-/**
- * Configures API settings through a series of input prompts
- */
-async function configureSettings(context) {
-    try {
-        const config = vscode.workspace.getConfiguration('localLLM');
-        // API URL
-        const apiUrl = await vscode.window.showInputBox({
-            prompt: 'Enter LLM API Base URL',
-            value: config.get('apiUrl') ?? 'http://localhost:11434',
-            placeHolder: 'http://localhost:11434',
-            validateInput: (value) => {
-                if (!value || value.trim().length === 0) {
-                    return 'URL cannot be empty';
-                }
-                return null;
-            }
-        });
-        if (apiUrl === undefined)
-            return; // User cancelled
-        await config.update('apiUrl', apiUrl, vscode.ConfigurationTarget.Global);
-        // Model name
-        const model = await vscode.window.showInputBox({
-            prompt: 'Enter model name',
-            value: config.get('model') ?? 'llama3.1',
-            placeHolder: 'llama3.1',
-            validateInput: (value) => {
-                if (!value || value.trim().length === 0) {
-                    return 'Model name cannot be empty';
-                }
-                return null;
-            }
-        });
-        if (model === undefined)
-            return;
-        await config.update('model', model, vscode.ConfigurationTarget.Global);
-        // API compatibility mode
-        const apiCompat = await vscode.window.showQuickPick([
-            {
-                label: 'OpenAI Compatible',
-                description: 'For LM Studio, vLLM, text-generation-webui, etc.',
-                value: 'openai'
-            },
-            {
-                label: 'Ollama Native',
-                description: 'For native Ollama API',
-                value: 'ollama'
-            }
-        ], {
-            placeHolder: 'Select API compatibility mode',
-            title: 'API Compatibility'
-        });
-        if (apiCompat === undefined)
-            return;
-        await config.update('apiCompat', apiCompat.value, vscode.ConfigurationTarget.Global);
-        // Custom endpoint (optional)
-        const customEndpoint = await vscode.window.showInputBox({
-            prompt: 'Enter custom endpoint URL (optional, OpenAI-style)',
-            value: config.get('customEndpoint') ?? '',
-            placeHolder: 'https://your-api.com/v1/chat/completions',
-            validateInput: (value) => {
-                if (value && value.trim().length > 0) {
-                    try {
-                        new URL(value);
-                        return null;
-                    }
-                    catch {
-                        return 'Invalid URL format';
-                    }
-                }
-                return null;
-            }
-        });
-        if (customEndpoint === undefined)
-            return;
-        await config.update('customEndpoint', customEndpoint, vscode.ConfigurationTarget.Global);
-        // API Token (secure)
-        const token = await vscode.window.showInputBox({
-            prompt: 'Enter API Token (optional, leave blank if none)',
-            password: true,
-            placeHolder: 'sk-...'
-        });
-        if (token !== undefined) {
-            await (0, llm_1.setSecretToken)(context, token);
-        }
-        // Temperature
-        const temperature = await vscode.window.showInputBox({
-            prompt: 'Enter temperature (0.0 - 2.0, default: 0.7)',
-            value: String(config.get('temperature') ?? 0.7),
-            validateInput: (value) => {
-                const num = parseFloat(value);
-                if (isNaN(num) || num < 0 || num > 2) {
-                    return 'Temperature must be between 0.0 and 2.0';
-                }
-                return null;
-            }
-        });
-        if (temperature !== undefined) {
-            await config.update('temperature', parseFloat(temperature), vscode.ConfigurationTarget.Global);
-        }
-        vscode.window.showInformationMessage('Local LLM settings saved successfully!');
-    }
-    catch (error) {
-        vscode.window.showErrorMessage(`Failed to save settings: ${error?.message ?? error}`);
-    }
 }
 /**
  * Creates a new file from the current editor selection
