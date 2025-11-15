@@ -6,7 +6,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.4.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 ![Ollama](https://img.shields.io/badge/Ollama-Compatible-000000?style=for-the-badge&logo=ollama&logoColor=white)
 ![LM Studio](https://img.shields.io/badge/LM%20Studio-Supported-FF6B6B?style=for-the-badge)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+![License](https://img.shields.io/badge/License-GPL-green?style=for-the-badge)
 
 **A powerful VS Code extension for chatting with local Large Language Models directly in your editor—completely private and secure**
 
